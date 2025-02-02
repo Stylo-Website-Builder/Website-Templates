@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= websiteName %></title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-50">
+    <header class="fixed w-full z-30 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800"><%= header.logo %></h1>
+                <nav class="hidden md:flex">
+                    <ul class="flex gap-8">
+                        <% header.items.forEach(item => { %>
+                        <li>
+                            <a href="<%= item.href %>" class="text-gray-600 hover:text-rose-500 transition-colors cursor-pointer">
+                                <%= item.text %>
+                            </a>
+                        </li>
+                        <% }) %>
+                    </ul>
+                </nav>
+                <div class="text-rose-500 font-medium"><%= header.phone %></div>
+            </div>
+        </div>
+    </header>
+
+    <section class="pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8">
+            <div class="bg-white rounded-3xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] p-8 sm:p-16">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8">
+                        <h1 class="text-6xl font-bold text-gray-800"><%= hero.greeting %></h1>
+                        <p class="text-xl text-gray-600"><%= hero.subtitle %></p>
+                        <button class="px-3 sm:px-8 py-4 bg-rose-500 text-white rounded-xl shadow-lg hover:bg-rose-600 hover:shadow-rose-200 transition-all">
+                            <%= hero.cta %>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-rose-100 rounded-3xl rotate-6"></div>
+                        <div class="absolute inset-0 bg-rose-200 rounded-3xl rotate-3"></div>
+                        <div class="relative rounded-3xl overflow-hidden shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+                            <img src="<%= hero.profileImage %>" alt="Profile" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8">
+            <div class="bg-white rounded-3xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] p-8 sm:p-16">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="relative group">
+                        <img src="<%= about.image %>" alt="About" class="rounded-3xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] transition-transform group-hover:scale-[1.02] duration-300">
+                    </div>
+                    <div class="space-y-8">
+                        <h2 class="text-4xl font-bold text-gray-800"><%= about.title %></h2>
+                        <p class="text-gray-600"><%= about.description %></p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <% Object.entries(about.details).forEach(([key, value]) => { %>
+                            <div class="bg-gray-50 rounded-xl p-6 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+                                <span class="text-rose-500 font-medium block mb-2"><%= key.charAt(0).toUpperCase() + key.slice(1) %></span>
+                                <%= value %>
+                            </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-20">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-16"><%= services.title %></h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <% services.items.forEach(service => { %>
+                <div class="group bg-white rounded-2xl p-8 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] hover:shadow-lg transition-all">
+                    <div class="h-2 w-16 bg-rose-500 rounded-full mb-6"></div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4"><%= service.name %></h3>
+                    <p class="text-gray-600 mb-4"><%= service.description %></p>
+                    <span class="text-rose-500 font-bold"><%= service.price %></span>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-16"><%= projects.title %></h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <% projects.items.forEach(project => { %>
+                <div class="group relative bg-white rounded-2xl p-4 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] hover:shadow-xl transition-all">
+                    <img src="<%= project.image %>" alt="<%= project.name %>" class="w-full h-[300px] object-cover rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+                    <div class="mt-4">
+                        <h3 class="text-xl font-bold text-gray-800"><%= project.name %></h3>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20">
+        <div class="max-w-3xl mx-auto px-3 sm:px-8">
+            <div class="bg-white rounded-3xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] p-8 sm:p-16">
+                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12"><%= contact.title %></h2>
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Name" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <input type="email" placeholder="Email" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                    <textarea placeholder="Tell me about the project" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500" rows="4"></textarea>
+                    <button class="w-full py-4 bg-rose-500 text-white rounded-xl shadow-lg hover:bg-rose-600 hover:shadow-rose-200 transition-all">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-8 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
+        <p class="text-center text-gray-600"><%= footer.copyright %></p>
+    </footer>
+</body>
+</html>
