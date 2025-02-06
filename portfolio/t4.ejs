@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= websiteName %></title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4 px-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold"><%= header.logoText %></h1>
+            <nav>
+                <ul class="flex gap-6">
+                    <% header.items.forEach(item => { %>
+                        <li>
+                            <a href="<%= item.href %>" class="hover:underline"><%= item.text %></a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </nav>
+            <div class="text-sm">📞 <%= header.phone %></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-green-400 to-blue-500 text-white py-20 px-5">
+        <div class="container mx-auto text-center">
+            <div class="flex flex-col items-center">
+                <img src="<%= hero.profileImage %>" alt="Profile" class="rounded-full w-32 h-32 object-cover">
+                <h1 class="text-4xl font-bold mt-4"><%= hero.greeting %></h1>
+                <p class="mt-2 text-lg"><%= hero.subtitle %></p>
+                <a href="#about" class="bg-blue-600 px-4 py-2 rounded-full mt-4 hover:bg-blue-700">
+                    <%= hero.cta %>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-100 px-5">
+        <div class="container mx-auto grid grid-cols-2 gap-8">
+            <img src="<%= about.image %>" alt="About" class="w-full rounded-lg h-[252px] object-cover">
+            <div>
+                <h2 class="text-3xl font-bold"><%= about.title %></h2>
+                <p class="mt-4"><%= about.description %></p>
+                <div class="mt-8">
+                    <ul class="space-y-4">
+                        <% Object.entries(about.details).forEach(([key, value]) => { %>
+                            <li>
+                                <strong><%= key.charAt(0).toUpperCase() + key.slice(1) %>:</strong> <%= value %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-green-100 px-5">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold"><%= services.title %></h2>
+            <div class="grid grid-cols-4 gap-8 mt-8">
+                <% services.items.forEach(service => { %>
+                    <div class="p-6 bg-white rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold"><%= service.name %></h3>
+                        <p class="text-gray-600"><%= service.description %></p>
+                        <span class="text-green-600 font-bold"><%= service.price %></span>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50 px-5">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold"><%= projects.title %></h2>
+            <div class="grid grid-cols-3 gap-8 mt-8">
+                <% projects.items.forEach(project => { %>
+                    <div class="p-4 bg-white rounded-lg shadow-md">
+                        <img src="<%= project.image %>" alt="<%= project.name %>" 
+                             class="rounded-lg max-h-[140px] min-h-[140px] w-full object-cover">
+                        <h3 class="mt-4 text-xl font-bold"><%= project.name %></h3>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-200 px-5">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold"><%= contact.title %></h2>
+            <form class="mt-8 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="Name" class="p-4 border rounded">
+                    <input type="email" placeholder="Email" class="p-4 border rounded">
+                </div>
+                <textarea placeholder="Tell me about the project" class="w-full p-4 border rounded" rows="4"></textarea>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                    Send
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-4 text-center px-5">
+        <p><%= footer.copyright %></p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').slice(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

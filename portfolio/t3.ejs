@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= websiteName %></title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 text-white min-h-screen">
+    <!-- Decorative Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-500/30 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed w-full z-30">
+        <div class="mx-4 mt-4">
+            <div class="max-w-7xl mx-auto backdrop-blur-lg bg-white/10 rounded-2xl border border-white/20 shadow-lg">
+                <div class="px-8 py-4 flex justify-between items-center">
+                    <h1 class="text-2xl font-light"><%= header.logoText %></h1>
+                    <nav>
+                        <ul class="flex gap-8">
+                            <% header.items.forEach(item => { %>
+                            <li>
+                                <a href="<%= item.href %>" class="hover:text-purple-300 transition-colors">
+                                    <%= item.text %>
+                                </a>
+                            </li>
+                            <% }) %>
+                        </ul>
+                    </nav>
+                    <div class="text-purple-300"><%= header.phone %></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen pt-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="backdrop-blur-lg bg-white/10 rounded-3xl border border-white/20 p-16">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-8">
+                        <h1 class="text-7xl font-bold"><%= hero.greeting %></h1>
+                        <p class="text-xl text-purple-200"><%= hero.subtitle %></p>
+                        <a href="#about" class="inline-block px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all shadow-lg hover:shadow-purple-500/25">
+                            <%= hero.cta %>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full blur-3xl"></div>
+                        <div class="relative rounded-3xl overflow-hidden w-full h-[500px]">
+                            <img src="<%= hero.profileImage %>" alt="Profile" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-4">
+        <div class="max-w-7xl mx-auto backdrop-blur-lg bg-white/10 rounded-3xl border border-white/20 p-16">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all"></div>
+                    <img src="<%= about.image %>" alt="About" class="relative rounded-3xl w-full h-[600px] object-cover transition-transform group-hover:scale-105 duration-500">
+                </div>
+                <div class="space-y-8">
+                    <h2 class="text-5xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                        <%= about.title %>
+                    </h2>
+                    <p class="text-lg text-purple-200"><%= about.description %></p>
+                    <div class="space-y-6">
+                        <% Object.entries(about.details).forEach(([key, value]) => { %>
+                        <div class="backdrop-blur-lg bg-white/5 rounded-xl p-4 border border-white/10">
+                            <span class="text-purple-300 font-medium block mb-2">
+                                <%= key.charAt(0).toUpperCase() + key.slice(1) %>
+                            </span>
+                            <%= value %>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <%= services.title %>
+            </h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <% services.items.forEach(service => { %>
+                <div class="group backdrop-blur-lg bg-white/10 rounded-2xl border border-white/20 p-8 hover:bg-white/20 transition-all duration-300">
+                    <h3 class="text-2xl font-bold mb-4"><%= service.name %></h3>
+                    <p class="text-purple-200 mb-4"><%= service.description %></p>
+                    <span class="inline-block bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent font-bold">
+                        <%= service.price %>
+                    </span>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <%= projects.title %>
+            </h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <% projects.items.forEach(project => { %>
+                <div class="group relative overflow-hidden rounded-2xl">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <img src="<%= project.image %>" alt="<%= project.name %>" 
+                         class="w-full h-[400px] object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 flex items-end p-8 bg-gradient-to-t from-purple-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-all">
+                        <h3 class="text-2xl font-bold"><%= project.name %></h3>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-4">
+        <div class="max-w-3xl mx-auto backdrop-blur-lg bg-white/10 rounded-3xl border border-white/20 p-16">
+            <h2 class="text-5xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <%= contact.title %>
+            </h2>
+            <form class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Name" 
+                           class="w-full px-6 py-4 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 transition-colors">
+                    <input type="email" placeholder="Email" 
+                           class="w-full px-6 py-4 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 transition-colors">
+                </div>
+                <textarea placeholder="Tell me about the project" 
+                          class="w-full px-6 py-4 bg-white/5 rounded-xl border border-white/10 focus:outline-none focus:border-purple-500 transition-colors" 
+                          rows="4"></textarea>
+                <button class="w-full py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all shadow-lg hover:shadow-purple-500/25">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="backdrop-blur-lg bg-white/5 py-8 border-t border-white/10">
+        <p class="text-center text-purple-200"><%= footer.copyright %></p>
+    </footer>
+</body>
+</html>
