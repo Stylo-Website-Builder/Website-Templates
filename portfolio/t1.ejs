@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const popupMessage = document.getElementById("popupMessage");
     const popupText = document.getElementById("popupText");
     const contactNo = document.getElementById("contactNo");
+    const submitButton = form.querySelector("button[type='submit']");
 
     function showPopup(message, type = "success") {
         popupText.textContent = message;
@@ -167,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const name = document.getElementById("name");
         const email = document.getElementById("email");
         const message = document.getElementById("message");
-        const submitButton = form.querySelector("button[type='submit']");
 
         const nameError = document.getElementById("nameError");
         const emailError = document.getElementById("emailError");
