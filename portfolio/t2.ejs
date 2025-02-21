@@ -9,9 +9,15 @@
 </head>
 <body class="font-sans bg-gray-900 text-gray-100">
     <!-- Header - Fixed Navigation -->
-    <header class="fixed w-full bg-gray-900/80 backdrop-blur-md z-30 py-4 px-8">
+    <header class="fixed w-full bg-gray-900/80 backdrop-blur-md z-30 py-3 px-8">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-light"><%= header.logoText %></h1>
+            <% if (header.logoType === "text") { %>
+                <h1 class="text-xl font-light py-[6px]"><%= header.logoText %></h1>
+            <% } else { %>
+                <div class="relative rounded-3xl">
+                    <img src="<%= header.logoImage %>" alt="Logo" class="h-[40px]">
+                </div>
+            <% } %>
             <nav class="hidden md:block">
                 <ul class="flex gap-8">
                     <% header.items.forEach(item => { %>
@@ -108,19 +114,37 @@
 
     <!-- Contact Section -->
     <section id="contact" class="py-32 px-8">
+        <div id="popupMessage" class="fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-all duration-300 transform scale-90">
+            <span id="popupText"></span>
+        </div>
+
         <div class="max-w-2xl mx-auto">
             <h2 class="text-4xl font-bold text-center mb-16"><%= contact.title %></h2>
-            <form class="space-y-6">
+            <form id="contactForm" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
-                    <input type="text" placeholder="Name" 
-                           class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400">
-                    <input type="email" placeholder="Email" 
-                           class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <div>
+                        <input type="text" name="name" id="name" placeholder="Name" 
+                               class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="nameError"></p>
+                    </div>
+                    <div>
+                        <input type="email" name="email" id="email" placeholder="Email" 
+                               class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="emailError"></p>
+                    </div>
                 </div>
-                <textarea placeholder="Tell me about the project" 
-                          class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400" 
-                          rows="4"></textarea>
-                <button class="w-full bg-emerald-400 text-gray-900 font-medium px-6 py-4 rounded-lg hover:bg-emerald-300 transition-colors">
+                <div>
+                    <input type="text" name="contactNo" id="contactNo" placeholder="Contact No" 
+                           class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                    <p class="text-red-500 text-sm mt-1 hidden" id="contactError"></p>
+                </div>
+                <div>
+                    <textarea name="message" id="message" placeholder="Tell me about your query" 
+                            class="w-full px-6 py-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400" 
+                            rows="4"></textarea>
+                    <p class="text-red-500 text-sm mt-1 hidden" id="messageError"></p>
+                </div>
+                <button type="submit" class="w-full bg-emerald-400 text-gray-900 font-medium px-6 py-4 rounded-lg hover:bg-emerald-300 transition-colors">
                     Send Message
                 </button>
             </form>
@@ -131,5 +155,130 @@
     <footer class="bg-gray-800 py-8 px-8 text-center">
         <p class="text-gray-400"><%= footer.copyright %></p>
     </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contactForm");
+    const popupMessage = document.getElementById("popupMessage");
+    const popupText = document.getElementById("popupText");
+    const contactNo = document.getElementById("contactNo");
+    const submitButton = form.querySelector("button[type='submit']");
+
+    function showPopup(message, type = "success") {
+        popupText.textContent = message;
+        popupMessage.classList.remove("hidden", "bg-green-500", "bg-red-500", "scale-90");
+        popupMessage.classList.add(type === "error" ? "bg-red-500" : "bg-green-500", "scale-100");
+
+        setTimeout(() => {
+            popupMessage.classList.add("hidden", "scale-90");
+        }, 3000);
+    }
+
+    function validateForm() {
+        let isValid = true;
+
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const contactError = document.getElementById("contactError");
+        const messageError = document.getElementById("messageError");
+
+        // Reset errors
+        [nameError, emailError, contactError, messageError].forEach(error => error.classList.add("hidden"));
+
+        if (name.value.trim() === "") {
+            nameError.textContent = "Name is required.";
+            nameError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (email.value.trim() === "") {
+            emailError.textContent = "Email is required.";
+            emailError.classList.remove("hidden");
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(email.value)) {
+            emailError.textContent = "Enter a valid email.";
+            emailError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (contactNo.value.trim() === "") {
+            contactError.textContent = "Mobile number is required.";
+            contactError.classList.remove("hidden");
+            isValid = false;
+        } else if (!/^\d{10}$/.test(contactNo.value)) {
+            contactError.textContent = "Mobile number must be exactly 10 digits.";
+            contactError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (message.value.trim() === "") {
+            messageError.textContent = "Message is required.";
+            messageError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        submitButton.textContent = "Sending...";
+        submitButton.disabled = true;
+
+        const formData = new FormData(form);
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+
+        const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(jsonObject),
+            });
+
+            if (response.ok) {
+                showPopup("Message sent successfully!", "success");
+                form.reset();
+                submitButton.textContent = "Send Message";
+                submitButton.disabled = false;
+            } else {
+                showPopup("Failed to send message. Try again.", "error");
+            }
+        } catch (error) {
+            showPopup("Error occurred. Please try again.", "error");
+        }
+    });
+
+    // Prevent users from entering more than 10 digits in the contact number field
+    contactNo.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+    // Clear error message when typing
+    document.querySelectorAll("input, textarea").forEach(input => {
+        input.addEventListener("input", function () {
+            const errorElement = this.nextElementSibling;
+            if (errorElement) {
+                errorElement.classList.add("hidden");
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
