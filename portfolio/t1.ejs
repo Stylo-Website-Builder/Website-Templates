@@ -108,7 +108,7 @@
     </section>
 
     <section id="contact" class="py-20">
-    <div id="popupMessage" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-all duration-300 transform scale-90">
+    <div id="popupMessage" class="fixed top-10 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-all duration-300 transform scale-90">
         <span id="popupText"></span>
     </div>
 
@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("contactForm");
     const popupMessage = document.getElementById("popupMessage");
     const popupText = document.getElementById("popupText");
+    const contactNo = document.getElementById("contactNo");
 
     function showPopup(message, type = "success") {
         popupText.textContent = message;
@@ -165,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const name = document.getElementById("name");
         const email = document.getElementById("email");
-        const contactNo = document.getElementById("contactNo");
         const message = document.getElementById("message");
 
         const nameError = document.getElementById("nameError");
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             jsonObject[key] = value;
         });
 
-        const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
+        const url = "http://localhost:8000/api/v1/websites/send-email/";
 
         try {
             const response = await fetch(url, {
@@ -244,6 +244,11 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             showPopup("Error occurred. Please try again.", "error");
         }
+    });
+
+    // Prevent users from entering more than 10 digits in the contact number field
+    contactNo.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 10);
     });
 
     // Clear error message when typing
