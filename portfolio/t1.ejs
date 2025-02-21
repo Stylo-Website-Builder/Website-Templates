@@ -131,46 +131,54 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.querySelector("form");
-        const successMessage = document.getElementById("successMessage");
+    const form = document.querySelector("form");
+    const successMessage = document.getElementById("successMessage");
 
-        form.addEventListener("submit", async function (event) {
-            event.preventDefault(); // Prevent default form submission
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-            const formData = new FormData(form);
-            const url = form.action;
+        const formData = new FormData(form);
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
 
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    body: formData,
-                });
+        const url = form.action;
 
-                if (response.ok) {
-                    successMessage.textContent = "Message sent successfully!";
-                    successMessage.classList.remove("hidden");
-                    successMessage.classList.add("block");
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(jsonObject),
+            });
 
-                    // Hide the message after 3 seconds
-                    setTimeout(() => {
-                        successMessage.classList.add("hidden");
-                        successMessage.classList.remove("block");
-                    }, 3000);
+            if (response.ok) {
+                successMessage.textContent = "Message sent successfully!";
+                successMessage.classList.remove("hidden");
+                successMessage.classList.add("block");
 
-                    // Optional: Reset the form
-                    form.reset();
-                } else {
-                    successMessage.textContent = "Failed to send message. Try again.";
-                    successMessage.classList.remove("hidden");
-                    successMessage.classList.add("text-red-600");
-                }
-            } catch (error) {
-                successMessage.textContent = "Error occurred. Please try again.";
+                // Hide the message after 3 seconds
+                setTimeout(() => {
+                    successMessage.classList.add("hidden");
+                    successMessage.classList.remove("block");
+                }, 3000);
+
+                // Optional: Reset the form
+                form.reset();
+            } else {
+                successMessage.textContent = "Failed to send message. Try again.";
                 successMessage.classList.remove("hidden");
                 successMessage.classList.add("text-red-600");
             }
-        });
+        } catch (error) {
+            successMessage.textContent = "Error occurred. Please try again.";
+            successMessage.classList.remove("hidden");
+            successMessage.classList.add("text-red-600");
+        }
     });
+});
 </script>
 
 </body>
