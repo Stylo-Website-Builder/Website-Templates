@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             jsonObject[key] = value;
         });
 
-        const url = "http://localhost:8000/api/v1/websites/send-email/";
+        const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
 
         try {
             const response = await fetch(url, {
