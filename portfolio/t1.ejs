@@ -9,9 +9,15 @@
 </head>
 <body class="font-sans bg-gray-50">
     <header class="fixed w-full z-30 bg-white/80 backdrop-blur-md shadow-sm">
-        <div class="max-w-7xl mx-auto px-3 sm:px-8 py-6">
+        <div class="max-w-7xl mx-auto px-3 sm:px-8 py-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800"><%= header.logoText %></h1>
+                <% if (header.logoType === "text") { %>
+                    <h1 class="text-2xl font-bold text-gray-800 py-2"><%= header.logoText %></h1>
+                <% } else { %>
+                    <div class="relative">
+                        <img src="<%= header.logoImage %>" alt="Logo" class="h-[48px]">
+                    </div>
+                <% } %>
                 <nav class="hidden md:flex">
                     <ul class="flex gap-8">
                         <% header.items.forEach(item => { %>
