@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const name = document.getElementById("name");
         const email = document.getElementById("email");
         const message = document.getElementById("message");
+        const submitButton = form.querySelector("button[type='submit']");
 
         const nameError = document.getElementById("nameError");
         const emailError = document.getElementById("emailError");
@@ -218,6 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        submitButton.textContent = "Sending...";
+        submitButton.disabled = true;
+
         const formData = new FormData(form);
         const jsonObject = {};
         formData.forEach((value, key) => {
@@ -238,6 +242,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok) {
                 showPopup("Message sent successfully!", "success");
                 form.reset();
+                submitButton.textContent = "Send Message";
+                submitButton.disabled = false;
             } else {
                 showPopup("Failed to send message. Try again.", "error");
             }
