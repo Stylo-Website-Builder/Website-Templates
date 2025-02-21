@@ -154,6 +154,8 @@
                 body: JSON.stringify(jsonObject),
             });
 
+console.log(url,formData, jsonObject)
+
             if (response.ok) {
                 successMessage.textContent = "Message sent successfully!";
                 successMessage.classList.remove("hidden");
