@@ -108,34 +108,115 @@
     </section>
 
     <section id="contact" class="py-20">
-        <div id="successMessage" class="hidden text-center text-green-600 font-medium"></div>
-        <div class="max-w-3xl mx-auto px-3 sm:px-8">
-            <div class="bg-white rounded-3xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] p-8 sm:p-16">
-                <h2 class="text-4xl font-bold text-center text-gray-800 mb-12"><%= contact.title %></h2>
-                <form class="space-y-6" action="http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>" method="POST">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="text" name="name" placeholder="Name" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500">
-                        <input type="email" name="email" placeholder="Email" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500">
+    <div id="popupMessage" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-all duration-300 transform scale-90">
+        <span id="popupText"></span>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-3 sm:px-8">
+        <div class="bg-white rounded-3xl shadow-md p-8 sm:p-16">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12"><%= contact.title %></h2>
+            <form id="contactForm" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <input type="text" name="name" id="name" placeholder="Name" class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="nameError"></p>
                     </div>
-                    <input type="number" name="contactNo" placeholder="Contact No" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500">
-                    <textarea name="message" placeholder="Tell me about reason for contact in short" class="w-full px-6 py-4 bg-gray-50 rounded-xl shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] focus:outline-none focus:ring-2 focus:ring-rose-500" rows="4"></textarea>
-                    <button type="submit" class="w-full py-4 bg-rose-500 text-white rounded-xl shadow-lg hover:bg-rose-600 hover:shadow-rose-200 transition-all">Send Message</button>
-                </form>
-            </div>
+                    <div>
+                        <input type="email" name="email" id="email" placeholder="Email" class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <p class="text-red-500 text-sm mt-1 hidden" id="emailError"></p>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" name="contactNo" id="contactNo" placeholder="Contact No" class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    <p class="text-red-500 text-sm mt-1 hidden" id="contactError"></p>
+                </div>
+                <div>
+                    <textarea name="message" id="message" placeholder="Tell me about your query" class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500" rows="4"></textarea>
+                    <p class="text-red-500 text-sm mt-1 hidden" id="messageError"></p>
+                </div>
+                <button type="submit" class="w-full py-4 bg-rose-500 text-white rounded-xl shadow-lg hover:bg-rose-600 transition-all">Send Message</button>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 
     <footer class="bg-white py-8 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]">
         <p class="text-center text-gray-600"><%= footer.copyright %></p>
     </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    const successMessage = document.getElementById("successMessage");
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contactForm");
+    const popupMessage = document.getElementById("popupMessage");
+    const popupText = document.getElementById("popupText");
+
+    function showPopup(message, type = "success") {
+        popupText.textContent = message;
+        popupMessage.classList.remove("hidden", "bg-green-500", "bg-red-500", "scale-90");
+        popupMessage.classList.add(type === "error" ? "bg-red-500" : "bg-green-500", "scale-100");
+
+        setTimeout(() => {
+            popupMessage.classList.add("hidden", "scale-90");
+        }, 3000);
+    }
+
+    function validateForm() {
+        let isValid = true;
+
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const contactNo = document.getElementById("contactNo");
+        const message = document.getElementById("message");
+
+        const nameError = document.getElementById("nameError");
+        const emailError = document.getElementById("emailError");
+        const contactError = document.getElementById("contactError");
+        const messageError = document.getElementById("messageError");
+
+        // Reset errors
+        [nameError, emailError, contactError, messageError].forEach(error => error.classList.add("hidden"));
+
+        if (name.value.trim() === "") {
+            nameError.textContent = "Name is required.";
+            nameError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (email.value.trim() === "") {
+            emailError.textContent = "Email is required.";
+            emailError.classList.remove("hidden");
+            isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(email.value)) {
+            emailError.textContent = "Enter a valid email.";
+            emailError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (contactNo.value.trim() === "") {
+            contactError.textContent = "Mobile number is required.";
+            contactError.classList.remove("hidden");
+            isValid = false;
+        } else if (!/^\d{10}$/.test(contactNo.value)) {
+            contactError.textContent = "Mobile number must be exactly 10 digits.";
+            contactError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        if (message.value.trim() === "") {
+            messageError.textContent = "Message is required.";
+            messageError.classList.remove("hidden");
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
     form.addEventListener("submit", async function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
 
         const formData = new FormData(form);
         const jsonObject = {};
@@ -143,7 +224,7 @@
             jsonObject[key] = value;
         });
 
-        const url = form.action;
+        const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
 
         try {
             const response = await fetch(url, {
@@ -155,28 +236,21 @@
             });
 
             if (response.ok) {
-                successMessage.textContent = "Message sent successfully!";
-                successMessage.classList.remove("hidden");
-                successMessage.classList.add("block");
-
-                // Hide the message after 3 seconds
-                setTimeout(() => {
-                    successMessage.classList.add("hidden");
-                    successMessage.classList.remove("block");
-                }, 3000);
-
-                // Optional: Reset the form
+                showPopup("Message sent successfully!", "success");
                 form.reset();
             } else {
-                successMessage.textContent = "Failed to send message. Try again.";
-                successMessage.classList.remove("hidden");
-                successMessage.classList.add("text-red-600");
+                showPopup("Failed to send message. Try again.", "error");
             }
         } catch (error) {
-            successMessage.textContent = "Error occurred. Please try again.";
-            successMessage.classList.remove("hidden");
-            successMessage.classList.add("text-red-600");
+            showPopup("Error occurred. Please try again.", "error");
         }
+    });
+
+    // Clear error message when typing
+    document.querySelectorAll("input, textarea").forEach(input => {
+        input.addEventListener("input", function () {
+            this.nextElementSibling.classList.add("hidden");
+        });
     });
 });
 </script>
