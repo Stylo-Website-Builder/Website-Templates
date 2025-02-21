@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Prevent users from entering more than 10 digits in the contact number field
+    // Prevent users from entering more than 10 digits in the contact number field and remove extra digits automatically
     contactNo.addEventListener("input", function () {
         this.value = this.value.replace(/\D/g, "").slice(0, 10);
     });
@@ -254,11 +254,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Clear error message when typing
     document.querySelectorAll("input, textarea").forEach(input => {
         input.addEventListener("input", function () {
-            this.nextElementSibling.classList.add("hidden");
+            const errorElement = this.nextElementSibling;
+            if (errorElement) {
+                errorElement.classList.add("hidden");
+            }
         });
     });
 });
 </script>
+
 
 </body>
 </html>
