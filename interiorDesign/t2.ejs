@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -319,19 +319,6 @@
                     const errorElement = this.nextElementSibling;
                     if (errorElement) {
                         errorElement.classList.add("hidden");
-                    }
-                });
-            });
-
-            // Smooth scroll for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const section = document.querySelector(this.getAttribute('href'));
-                    if (section) {
-                        section.scrollIntoView({
-                            behavior: 'smooth'
-                        });
                     }
                 });
             });
