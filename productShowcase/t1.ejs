@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= websiteName %></title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="font-sans bg-gray-50">
@@ -98,12 +99,20 @@
 
                 <div id="specifications-content" class="tab-content hidden opacity-0">
                     <div class="space-y-4">
-                        <% Object.entries(details.specifications).forEach(([key, value]) => { %>
-                            <div class="flex justify-between items-center border-b pb-2">
-                                <span class="text-gray-600"><%= key %></span>
-                                <span><%= value %></span>
-                            </div>
-                        <% }); %>
+                        <% if (details.specifications) { %>
+                            <% 
+                            // Convert Map to Array of entries if it's a Map
+                            const specEntries = details.specifications instanceof Map ? 
+                                Array.from(details.specifications.entries()) : 
+                                Object.entries(details.specifications);
+                            %>
+                            <% specEntries.forEach(([key, value]) => { %>
+                                <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+                                    <span class="text-gray-700 font-medium"><%= key %></span>
+                                    <span class="text-gray-600"><%= value %></span>
+                                </div>
+                            <% }); %>
+                        <% } %>
                     </div>
                 </div>
             </div>
