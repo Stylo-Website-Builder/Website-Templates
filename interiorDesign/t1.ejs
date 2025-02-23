@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= websiteName %></title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="font-serif bg-neutral-50 text-neutral-800">
@@ -275,7 +276,7 @@
       
               const formData = new FormData(form);
               const jsonObject = {};
-              formforEach((value, key) => {
+              formData.forEach((value, key) => {
                   jsonObject[key] = value;
               });
       
