@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= data.websiteName %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-serif bg-neutral-50 text-neutral-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-2">
+            <div class="flex justify-between items-center">
+                <% if (data.header.logoType === "text") { %>
+                    <div class="text-2xl font-light py-2">
+                        <%= data.header.logoText %>
+                    </div>
+                <% } else { %>
+                    <img src="<%= data.header.logoImage %>" alt="Logo" class="h-[48px]">
+                <% } %>
+                <div class="hidden md:flex space-x-8">
+                    <% data.header.items.forEach(item => { %>
+                        <a href="#<%= item.href %>" class="text-neutral-600 hover:text-neutral-900 transition-colors">
+                            <%= item.text %>
+                        </a>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen">
+        <div class="absolute inset-0 w-full h-full bg-cover bg-center bg-[url('https://img.freepik.com/free-photo/loft-home-office-interior-design_53876-143117.jpg')]"></div>
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative h-full flex items-center justify-center text-center text-white px-6">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl md:text-7xl font-light mb-6"><%= data.hero.title %></h1>
+                <p class="text-xl md:text-2xl font-light mb-8"><%= data.hero.subtitle %></p>
+                <a href="#portfolio" class="bg-white text-neutral-900 px-8 py-3 rounded-none hover:bg-neutral-100 transition-colors">
+                    <%= data.hero.cta %>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-neutral-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center mb-16">
+                <div class="relative">
+                    <img src="<%= data.about.mainImage %>" alt="About Us" class="w-full h-[600px] object-cover">
+                    <div class="absolute -bottom-8 -right-8 bg-white p-8 shadow-xl">
+                        <p class="text-4xl font-light text-neutral-900"><%= data.about.experience %></p>
+                        <p class="text-neutral-600">Years of Excellence</p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <h2 class="text-5xl font-light"><%= data.about.title %></h2>
+                    <p class="text-lg text-neutral-600 leading-relaxed"><%= data.about.subtitle %></p>
+                    <div class="grid grid-cols-2 gap-8">
+                        <% data.about.items.forEach(feature => { %>
+                            <div class="border-l-2 border-neutral-900 pl-6">
+                                <h3 class="text-xl font-medium mb-2"><%= feature.title %></h3>
+                                <p class="text-neutral-600"><%= feature.description %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-12">
+                <% data.stats.items.forEach(item => { %>
+                    <div class="text-center group">
+                        <div class="mb-4 relative">
+                            <div class="w-24 h-24 mx-auto rounded-full bg-neutral-100 flex items-center justify-center group-hover:bg-neutral-200 transition-colors">
+                                <img src="<%= item.icon %>" alt="<%= item.name %>" class="w-12 h-12">
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-2"><%= item.count %></h3>
+                        <p class="text-neutral-600"><%= item.name %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-light text-center mb-16"><%= data.services.title %></h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <% data.services.items.forEach(service => { %>
+                    <div class="text-center">
+                        <img src="<%= service.icon %>" alt="<%= service.title %>" class="w-16 h-16 mx-auto mb-6">
+                        <h3 class="text-2xl font-light mb-4"><%= service.title %></h3>
+                        <p class="text-neutral-600"><%= service.description %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 bg-neutral-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl font-light text-center mb-16"><%= data.portfolio.title %></h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% data.portfolio.items.forEach(item => { %>
+                    <div class="group relative overflow-hidden">
+                        <div class="relative">
+                            <img src="<%= item.image %>" alt="<%= item.title %>" class="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-110">
+                        </div>
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-center p-6">
+                                <div>
+                                    <h3 class="text-2xl font-light mb-2"><%= item.title %></h3>
+                                    <p class="text-sm"><%= item.category %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 px-6 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-light text-center mb-16 text-gray-800"><%= data.testimonials.title %></h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <% data.testimonials.items.forEach(testimonial => { %>
+                    <div class="bg-white rounded-xl p-6 shadow-lg text-center hover:shadow-2xl transition-shadow duration-300">
+                        <img src="<%= testimonial.avatar %>" alt="<%= testimonial.name %>" class="w-20 h-20 rounded-full mx-auto mb-4 object-cover">
+                        <div class="flex justify-center mb-4">
+                            <% for(let i = 0; i < 5; i++) { %>
+                                <span class="text-xl text-yellow-400">★</span>
+                            <% } %>
+                        </div>
+                        <p class="text-neutral-600 mb-6"><%= testimonial.quote %></p>
+                        <p class="font-medium text-gray-700"><%= testimonial.name %></p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+      <div id="popupMessage" class="fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden transition-all duration-300 transform scale-90">
+          <span id="popupText"></span>
+      </div>
+      <div class="max-w-3xl mx-auto px-3 sm:px-8">
+          <div class="bg-white rounded-3xl shadow-md p-8 sm:p-16">
+              <h2 class="text-4xl font-bold text-center text-gray-800 mb-12"><%= data.contact.title %></h2>
+              <form id="contactForm" class="space-y-6">
+                  <div class="grid md:grid-cols-2 gap-6">
+                      <div>
+                          <input type="text" name="name" id="name" placeholder="Name" 
+                              class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                          <p class="text-red-500 text-sm mt-1 hidden" id="nameError"></p>
+                      </div>
+                      <div>
+                          <input type="email" name="email" id="email" placeholder="Email" 
+                              class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                          <p class="text-red-500 text-sm mt-1 hidden" id="emailError"></p>
+                      </div>
+                  </div>
+                  <div>
+                      <input type="text" name="contactNo" id="contactNo" placeholder="Contact No" 
+                          class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500">
+                      <p class="text-red-500 text-sm mt-1 hidden" id="contactError"></p>
+                  </div>
+                  <div>
+                      <textarea name="message" id="message" placeholder="Tell me about your query" 
+                          class="w-full px-6 py-4 bg-gray-50 rounded-xl border focus:outline-none focus:ring-2 focus:ring-rose-500" 
+                          rows="4"></textarea>
+                      <p class="text-red-500 text-sm mt-1 hidden" id="messageError"></p>
+                  </div>
+                  <button type="submit" 
+                      class="w-full py-4 bg-rose-500 text-white rounded-xl shadow-lg hover:bg-rose-600 transition-all">
+                      Send Message
+                  </button>
+              </form>
+          </div>
+      </div>
+  </section>
+
+    <!-- Footer -->
+    <footer class="bg-neutral-900 text-neutral-400 py-12 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <%= data.footer.copyright %>
+        </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const form = document.getElementById("contactForm");
+          const popupMessage = document.getElementById("popupMessage");
+          const popupText = document.getElementById("popupText");
+          const contactNo = document.getElementById("contactNo");
+          const submitButton = form.querySelector("button[type='submit']");
+      
+          function showPopup(message, type = "success") {
+              popupText.textContent = message;
+              popupMessage.classList.remove("hidden", "bg-green-500", "bg-red-500", "scale-90");
+              popupMessage.classList.add(type === "error" ? "bg-red-500" : "bg-green-500", "scale-100");
+      
+              setTimeout(() => {
+                  popupMessage.classList.add("hidden", "scale-90");
+              }, 3000);
+          }
+      
+          function validateForm() {
+              let isValid = true;
+      
+              const name = document.getElementById("name");
+              const email = document.getElementById("email");
+              const message = document.getElementById("message");
+      
+              const nameError = document.getElementById("nameError");
+              const emailError = document.getElementById("emailError");
+              const contactError = document.getElementById("contactError");
+              const messageError = document.getElementById("messageError");
+      
+              // Reset errors
+              [nameError, emailError, contactError, messageError].forEach(error => error.classList.add("hidden"));
+      
+              if (name.value.trim() === "") {
+                  nameError.textContent = "Name is required.";
+                  nameError.classList.remove("hidden");
+                  isValid = false;
+              }
+      
+              if (email.value.trim() === "") {
+                  emailError.textContent = "Email is required.";
+                  emailError.classList.remove("hidden");
+                  isValid = false;
+              } else if (!/\S+@\S+\.\S+/.test(email.value)) {
+                  emailError.textContent = "Enter a valid email.";
+                  emailError.classList.remove("hidden");
+                  isValid = false;
+              }
+      
+              if (contactNo.value.trim() === "") {
+                  contactError.textContent = "Mobile number is required.";
+                  contactError.classList.remove("hidden");
+                  isValid = false;
+              } else if (!/^\d{10}$/.test(contactNo.value)) {
+                  contactError.textContent = "Mobile number must be exactly 10 digits.";
+                  contactError.classList.remove("hidden");
+                  isValid = false;
+              }
+      
+              if (message.value.trim() === "") {
+                  messageError.textContent = "Message is required.";
+                  messageError.classList.remove("hidden");
+                  isValid = false;
+              }
+      
+              return isValid;
+          }
+      
+          form.addEventListener("submit", async function (event) {
+              event.preventDefault();
+      
+              if (!validateForm()) {
+                  return;
+              }
+      
+              submitButton.textContent = "Sending...";
+              submitButton.disabled = true;
+      
+              const formData = new FormData(form);
+              const jsonObject = {};
+              formData.forEach((value, key) => {
+                  jsonObject[key] = value;
+              });
+      
+              const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
+      
+              try {
+                  const response = await fetch(url, {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(jsonObject),
+                  });
+      
+                  if (response.ok) {
+                      showPopup("Message sent successfully!", "success");
+                      form.reset();
+                  } else {
+                      showPopup("Failed to send message. Try again.", "error");
+                  }
+              } catch (error) {
+                  showPopup("Error occurred. Please try again.", "error");
+              } finally {
+                  submitButton.textContent = "Send Message";
+                  submitButton.disabled = false;
+              }
+          });
+      
+          // Prevent non-numeric input and limit to 10 digits
+          contactNo.addEventListener("input", function () {
+              this.value = this.value.replace(/\D/g, "").slice(0, 10);
+          });
+      
+          // Clear error messages on input
+          document.querySelectorAll("input, textarea").forEach(input => {
+              input.addEventListener("input", function () {
+                  const errorElement = this.nextElementSibling;
+                  if (errorElement) {
+                      errorElement.classList.add("hidden");
+                  }
+              });
+          });
+      });
+  </script>
+</body>
+</html>
