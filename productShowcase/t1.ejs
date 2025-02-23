@@ -54,17 +54,33 @@
     </section>
 
     <!-- Product Details -->
-    <section id="details" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col-reverse md:flex-row gap-12">
-                <div class="grid grid-cols-2 gap-6 h-fit flex-1">
-                    <% details.gallery.forEach(image => { %>
-                        <img src="<%= image %>" alt="Product Gallery" class="w-full h-48 object-cover rounded-xl shadow-md">
-                    <% }); %>
+    <!-- Product Details -->
+<section id="details" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col-reverse md:flex-row gap-12">
+            <div class="grid grid-cols-2 gap-6 h-fit flex-1">
+                <% details.gallery.forEach(image => { %>
+                    <img src="<%= image %>" alt="Product Gallery" class="w-full h-48 object-cover rounded-xl shadow-md">
+                <% }); %>
+            </div>
+            <div class="flex-1">
+                <div class="flex space-x-4 mb-8 border-b">
+                    <button
+                        class="pb-4 text-lg font-semibold text-primary-500 border-b-2 border-primary-500 tab-button"
+                        data-tab="description"
+                    >
+                        Description
+                    </button>
+                    <button
+                        class="pb-4 text-lg font-semibold text-gray-500 tab-button"
+                        data-tab="specifications"
+                    >
+                        Specifications
+                    </button>
                 </div>
-                <div class="flex-1">
+
+                <div id="description-content" class="tab-content active opacity-100">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-bold mb-4">Description</h2>
                         <p class="text-gray-600 mb-6"><%= details.description %></p>
                         <div class="grid md:grid-cols-2 gap-4 mb-10">
                             <% details.keyFeatures.forEach(feature => { %>
@@ -74,10 +90,14 @@
                                 </div>
                             <% }); %>
                         </div>
+                        <a href="#contact" class="inline-block px-8 py-4 border-2 border-primary-500 text-primary-500 rounded-xl hover:bg-primary-50 transition-colors">
+                            <%= details.descriptionbtnText %>
+                        </a>
                     </div>
+                </div>
 
+                <div id="specifications-content" class="tab-content hidden opacity-0">
                     <div class="space-y-4">
-                        <h2 class="text-2xl font-bold mb-4">Specifications</h2>
                         <% Object.entries(details.specifications).forEach(([key, value]) => { %>
                             <div class="flex justify-between items-center border-b pb-2">
                                 <span class="text-gray-600"><%= key %></span>
@@ -88,7 +108,68 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<style>
+    .tab-content {
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .tab-content.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    .tab-content.hidden {
+        display: none;
+        opacity: 0;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        function switchTab(tabId) {
+            // Update button styles
+            tabButtons.forEach(button => {
+                if (button.dataset.tab === tabId) {
+                    button.classList.add('text-primary-500', 'border-b-2', 'border-primary-500');
+                    button.classList.remove('text-gray-500');
+                } else {
+                    button.classList.remove('text-primary-500', 'border-b-2', 'border-primary-500');
+                    button.classList.add('text-gray-500');
+                }
+            });
+            
+            // Update content visibility with animation
+            tabContents.forEach(content => {
+                if (content.id === `${tabId}-content`) {
+                    content.classList.remove('hidden');
+                    setTimeout(() => {
+                        content.classList.add('active');
+                        content.classList.remove('opacity-0');
+                    }, 50);
+                } else {
+                    content.classList.remove('active');
+                    content.classList.add('opacity-0');
+                    setTimeout(() => {
+                        content.classList.add('hidden');
+                    }, 300);
+                }
+            });
+        }
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tab;
+                switchTab(tabId);
+            });
+        });
+    });
+</script>
 
     <!-- Testimonials -->
     <section id="testimonials" class="px-5 py-20">
@@ -142,7 +223,7 @@
                         <p class="text-red-500 text-sm mt-1 hidden" id="messageError"></p>
                     </div>
                     <button type="submit" 
-                        class="w-full py-4 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition-colors">
+                        class="w-full py-4 bg-primary-500 text-black border border-gray-200 rounded-xl hover:bg-primary-600 transition-colors">
                         Send Message
                     </button>
                 </form>
