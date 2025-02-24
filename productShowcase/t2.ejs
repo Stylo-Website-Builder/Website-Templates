@@ -6,7 +6,6 @@
     <title><%= websiteName %></title>
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dn5occ53n/image/upload/v1738491116/transparent-favicon_dsgzwb.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.16.4/framer-motion.js"></script>
 </head>
 <body class="font-sans bg-slate-900 text-white">
     <!-- Header -->
@@ -36,22 +35,20 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-7 space-y-8">
-                    <div class="animate-fadeIn">
-                        <span class="text-purple-400 text-lg font-semibold mb-4 block">Introducing</span>
-                        <h1 class="text-6xl font-bold leading-tight mb-6"><%= hero.title %></h1>
-                        <p class="text-xl text-slate-400 mb-8"><%= hero.subtitle %></p>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-center hover:opacity-90 transition-opacity">
-                                <%= hero.primaryCta %>
-                            </a>
-                            <a href="#details" class="px-8 py-4 border border-purple-500 rounded-full text-center hover:bg-purple-500/10 transition-colors">
-                                <%= hero.secondaryCta %>
-                            </a>
-                        </div>
+                    <span class="text-purple-400 text-lg font-semibold mb-4 block">Introducing</span>
+                    <h1 class="text-6xl font-bold leading-tight mb-6"><%= hero.title %></h1>
+                    <p class="text-xl text-slate-400 mb-8"><%= hero.subtitle %></p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-center hover:opacity-90 transition-opacity">
+                            <%= hero.primaryCta %>
+                        </a>
+                        <a href="#details" class="px-8 py-4 border border-purple-500 rounded-full text-center hover:bg-purple-500/10 transition-colors">
+                            <%= hero.secondaryCta %>
+                        </a>
                     </div>
                 </div>
                 <div class="lg:col-span-5">
-                    <div class="relative animate-scaleIn">
+                    <div class="relative">
                         <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl blur-3xl opacity-20"></div>
                         <img src="<%= hero.productImage %>" alt="Product Image" class="w-full rounded-3xl relative z-10">
                     </div>
@@ -71,25 +68,29 @@
                             <div class="relative rounded-2xl bg-slate-900">
                                 <div class="h-96">
                                     <div id="mainImage" class="h-full">
-                                        <img src="<%= details.gallery[0] %>" alt="Product Gallery" class="w-full h-full object-contain transition-opacity duration-300">
+                                        <img src="<%= details.gallery[0] %>" alt="Product Gallery" class="w-full h-full object-contain">
                                     </div>
                                     <!-- Navigation Buttons -->
                                     <button onclick="previousImage()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                                     </button>
                                     <button onclick="nextImage()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Thumbnail Navigation -->
-                            <div class="flex justify-center mt-4 gap-2" id="dotNavigation"></div>
+                            <div class="flex justify-center mt-4 gap-2" id="imageDots">
+                                <% details.gallery.forEach((_, index) => { %>
+                                    <button onclick="goToImage(<%= index %>)" class="w-2 h-2 rounded-full transition-all <%= index === 0 ? 'bg-purple-500 w-8' : 'bg-slate-600 hover:bg-slate-500' %>"></button>
+                                <% }); %>
+                            </div>
 
                             <!-- Thumbnail Preview -->
-                            <div class="mt-4 grid grid-cols-4 gap-2" id="thumbnailContainer">
+                            <div class="mt-4 grid grid-cols-4 gap-2">
                                 <% details.gallery.forEach((image, index) => { %>
-                                    <button onclick="goToImage('<%= index %>')" class="relative rounded-lg overflow-hidden aspect-video">
+                                    <button onclick="goToImage(<%= index %>)" class="relative rounded-lg overflow-hidden aspect-video <%= index === 0 ? 'ring-2 ring-purple-500' : 'opacity-60 hover:opacity-100' %>">
                                         <img src="<%= image %>" alt="Thumbnail <%= index + 1 %>" class="w-full h-full object-cover">
                                     </button>
                                 <% }); %>
@@ -100,23 +101,27 @@
                 <div class="lg:w-1/2">
                     <div class="space-y-8">
                         <div class="inline-flex rounded-full bg-purple-500/10 p-1">
-                            <button onclick="switchTab('description')" class="px-6 py-2 rounded-full text-sm font-medium transition-colors text-purple-400 tab-button active">Description</button>
-                            <button onclick="switchTab('specifications')" class="px-6 py-2 rounded-full text-sm font-medium transition-colors text-purple-400 tab-button">Specifications</button>
+                            <button class="px-6 py-2 rounded-full text-sm font-medium transition-colors bg-purple-500 text-white" onclick="switchTab('description')" id="descriptionTab">
+                                Description
+                            </button>
+                            <button class="px-6 py-2 rounded-full text-sm font-medium transition-colors text-purple-400 hover:text-purple-300" onclick="switchTab('specifications')" id="specificationsTab">
+                                Specifications
+                            </button>
                         </div>
 
-                        <div id="description-content" class="tab-content space-y-6">
+                        <div id="descriptionContent" class="space-y-6">
                             <p class="text-slate-300 text-lg"><%= details.description %></p>
                             <div class="grid gap-4">
                                 <% details.keyFeatures.forEach(feature => { %>
                                     <div class="flex items-center space-x-3 bg-slate-700/50 p-4 rounded-xl">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-purple-400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="m9 18 6-6-6-6"/></svg>
                                         <%= feature %>
                                     </div>
                                 <% }); %>
                             </div>
                         </div>
 
-                        <div id="specifications-content" class="tab-content hidden space-y-4">
+                        <div id="specificationsContent" class="space-y-4 hidden">
                             <% Object.entries(details.specifications).forEach(([key, value]) => { %>
                                 <div class="flex justify-between items-center bg-slate-700/50 p-4 rounded-xl">
                                     <span class="text-slate-300"><%= key %></span>
@@ -135,8 +140,8 @@
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-16"><%= testimonials.title %></h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <% testimonials.items.forEach((review, index) => { %>
-                    <div class="bg-slate-800 p-8 rounded-2xl animate-fadeIn" style="animation-delay: <%= index * 0.1 %>s">
+                <% testimonials.items.forEach(review => { %>
+                    <div class="bg-slate-800 p-8 rounded-2xl">
                         <div class="flex items-center gap-4 mb-6">
                             <img src="<%= review.imageUrl %>" alt="<%= review.name %>" class="w-16 h-16 rounded-full object-cover">
                             <div>
@@ -180,7 +185,7 @@
                         <p class="text-red-500 text-sm mt-1 hidden" id="contactError"></p>
                     </div>
                     <div>
-                        <textarea name="message" id="message" placeholder="Your Message" rows="4" 
+                        <textarea name="message" id="message" placeholder="Your Message" rows="4"
                             class="w-full px-6 py-4 bg-slate-900/50 rounded-xl border border-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-slate-500 text-white resize-none"></textarea>
                         <p class="text-red-500 text-sm mt-1 hidden" id="messageError"></p>
                     </div>
@@ -199,70 +204,17 @@
         </div>
     </footer>
 
-    <style>
-        .animate-fadeIn {
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out forwards;
-        }
-
-        .animate-scaleIn {
-            opacity: 0;
-            transform: scale(0.9);
-            animation: scaleIn 0.6s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes scaleIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .tab-button.active {
-            background-color: rgb(168, 85, 247);
-            color: white;
-        }
-
-        .tab-content {
-            transition: opacity 0.3s ease-in-out;
-        }
-    </style>
-
     <script>
+        // Image Gallery
         let currentImageIndex = 0;
-        const gallery = <%= JSON.stringify(details.gallery) %>;
-
+        const gallery = <%- JSON.stringify(details.gallery) %>;
+        
         function updateImage(index) {
-            const mainImage = document.querySelector('#mainImage img');
-            const thumbnails = document.querySelectorAll('#thumbnailContainer button');
-            const dots = document.querySelectorAll('#dotNavigation button');
-
-            // Update main image with fade effect
-            mainImage.style.opacity = '0';
-            setTimeout(() => {
-                mainImage.src = gallery[index];
-                mainImage.style.opacity = '1';
-            }, 300);
-
-            // Update thumbnails
-            thumbnails.forEach((thumb, i) => {
-                if (i === index) {
-                    thumb.classList.add('ring-2', 'ring-purple-500');
-                    thumb.classList.remove('opacity-60');
-                } else {
-                    thumb.classList.remove('ring-2', 'ring-purple-500');
-                    thumb.classList.add('opacity-60');
-                }
-            });
-
+            const mainImage = document.getElementById('mainImage').querySelector('img');
+            mainImage.src = gallery[index];
+            
             // Update dots
-            dots.forEach((dot, i) => {
+            document.querySelectorAll('#imageDots button').forEach((dot, i) => {
                 if (i === index) {
                     dot.classList.add('bg-purple-500', 'w-8');
                     dot.classList.remove('bg-slate-600');
@@ -271,64 +223,62 @@
                     dot.classList.add('bg-slate-600');
                 }
             });
-
-            currentImageIndex = index;
+            
+            // Update thumbnails
+            document.querySelectorAll('.grid button').forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('ring-2', 'ring-purple-500');
+                    thumb.classList.remove('opacity-60');
+                } else {
+                    thumb.classList.remove('ring-2', 'ring-purple-500');
+                    thumb.classList.add('opacity-60');
+                }
+            });
         }
 
         function nextImage() {
-            const nextIndex = (currentImageIndex + 1) % gallery.length;
-            updateImage(nextIndex);
+            currentImageIndex = (currentImageIndex + 1) % gallery.length;
+            updateImage(currentImageIndex);
         }
 
         function previousImage() {
-            const prevIndex = (currentImageIndex - 1 + gallery.length) % gallery.length;
-            updateImage(prevIndex);
+            currentImageIndex = currentImageIndex === 0 ? gallery.length - 1 : currentImageIndex - 1;
+            updateImage(currentImageIndex);
         }
 
         function goToImage(index) {
-            updateImage(index);
+            currentImageIndex = index;
+            updateImage(currentImageIndex);
         }
 
-        function switchTab(tabId) {
-            const buttons = document.querySelectorAll('.tab-button');
-            const contents = document.querySelectorAll('.tab-content');
+        // Tab Switching
+        function switchTab(tabName) {
+            const descriptionTab = document.getElementById('descriptionTab');
+            const specificationsTab = document.getElementById('specificationsTab');
+            const descriptionContent = document.getElementById('descriptionContent');
+            const specificationsContent = document.getElementById('specificationsContent');
 
-            buttons.forEach(button => {
-                if (button.textContent.toLowerCase().includes(tabId)) {
-                    button.classList.add('active');
-                } else {
-                    button.classList.remove('active');
-                }
-            });
-
-            contents.forEach(content => {
-                if (content.id === `${tabId}-content`) {
-                    content.classList.remove('hidden');
-                    setTimeout(() => {
-                        content.style.opacity = '1';
-                    }, 50);
-                } else {
-                    content.style.opacity = '0';
-                    setTimeout(() => {
-                        content.classList.add('hidden');
-                    }, 300);
-                }
-            });
+            if (tabName === 'description') {
+                descriptionTab.classList.add('bg-purple-500', 'text-white');
+                descriptionTab.classList.remove('text-purple-400');
+                specificationsTab.classList.remove('bg-purple-500', 'text-white');
+                specificationsTab.classList.add('text-purple-400');
+                
+                descriptionContent.classList.remove('hidden');
+                specificationsContent.classList.add('hidden');
+            } else {
+                specificationsTab.classList.add('bg-purple-500', 'text-white');
+                specificationsTab.classList.remove('text-purple-400');
+                descriptionTab.classList.remove('bg-purple-500', 'text-white');
+                descriptionTab.classList.add('text-purple-400');
+                
+                specificationsContent.classList.remove('hidden');
+                descriptionContent.classList.add('hidden');
+            }
         }
 
-        // Initialize dot navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            const dotNavigation = document.getElementById('dotNavigation');
-            gallery.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = `w-2 h-2 rounded-full transition-all ${
-                    index === 0 ? 'bg-purple-500 w-8' : 'bg-slate-600 hover:bg-slate-500'
-                }`;
-                dot.onclick = () => goToImage(index);
-                dotNavigation.appendChild(dot);
-            });
-
-            // Form handling
+        // Form Handling
+        document.addEventListener("DOMContentLoaded", function () {
             const form = document.getElementById("contactForm");
             const popupMessage = document.getElementById("popupMessage");
             const popupText = document.getElementById("popupText");
@@ -360,14 +310,12 @@
                 // Reset errors
                 [nameError, emailError, contactError, messageError].forEach(error => error.classList.add("hidden"));
 
-                // Name validation
                 if (name.value.trim() === "") {
                     nameError.textContent = "Name is required.";
                     nameError.classList.remove("hidden");
                     isValid = false;
                 }
 
-                // Email validation
                 if (email.value.trim() === "") {
                     emailError.textContent = "Email is required.";
                     emailError.classList.remove("hidden");
@@ -378,7 +326,6 @@
                     isValid = false;
                 }
 
-                // Contact number validation
                 if (contactNo.value.trim() === "") {
                     contactError.textContent = "Mobile number is required.";
                     contactError.classList.remove("hidden");
@@ -389,7 +336,6 @@
                     isValid = false;
                 }
 
-                // Message validation
                 if (message.value.trim() === "") {
                     messageError.textContent = "Message is required.";
                     messageError.classList.remove("hidden");
@@ -440,19 +386,34 @@
                 }
             });
 
-            // Contact number input handling
-            contactNo.addEventListener("input", function() {
+            // Prevent non-numeric input and limit to 10 digits
+            contactNo.addEventListener("input", function () {
                 this.value = this.value.replace(/\D/g, "").slice(0, 10);
             });
 
             // Clear error messages on input
             document.querySelectorAll("input, textarea").forEach(input => {
-                input.addEventListener("input", function() {
+                input.addEventListener("input", function () {
                     const errorElement = this.nextElementSibling;
                     if (errorElement) {
                         errorElement.classList.add("hidden");
                     }
                 });
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').slice(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
     </script>
