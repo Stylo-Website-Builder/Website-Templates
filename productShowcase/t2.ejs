@@ -122,12 +122,27 @@
                         </div>
 
                         <div id="specificationsContent" class="space-y-4 hidden">
-                            <% Object.entries(details.specifications).forEach(([key, value]) => { %>
+                            <% if (details.specifications) { %>
+                                <% 
+                                // Convert Map to Array of entries if it's a Map
+                                const specEntries = details.specifications instanceof Map ? 
+                                    Array.from(details.specifications.entries()) : 
+                                    Object.entries(details.specifications);
+                                %>
+                                <% specEntries.forEach(([key, value]) => { %>
+                                    <div class="flex justify-between items-center bg-slate-700/50 p-4 rounded-xl">
+                                        <span class="text-slate-300"><%= key %></span>
+                                        <span class="text-slate-300"><%= value %></span>
+                                    </div>
+                                <% }); %>
+                            <% } %>
+
+                            <!-- <% Object.entries(details.specifications).forEach(([key, value]) => { %>
                                 <div class="flex justify-between items-center bg-slate-700/50 p-4 rounded-xl">
                                     <span class="text-slate-300"><%= key %></span>
                                     <span class="text-slate-300"><%= value %></span>
                                 </div>
-                            <% }); %>
+                            <% }); %> -->
                         </div>
                     </div>
                 </div>
