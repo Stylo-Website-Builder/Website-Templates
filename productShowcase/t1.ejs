@@ -329,7 +329,7 @@
                     jsonObject[key] = value;
                 });
 
-                const url = "http://localhost:8000/api/v1/websites/send-email/<%= type %>/<%= _id %>";
+                const url = "https://stylo-website-builder.onrender.com/api/v1/websites/send-email/<%= type %>/<%= _id %>";
 
                 try {
                     const response = await fetch(url, {
